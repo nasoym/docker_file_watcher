@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+trap 'echo "$0: line ${LINENO}: exiting because of error";exit 1' ERR
+
+file="$1"
+if [[ -n "$file" ]] && [[ -r "$file" ]];then
+  cat ${file} \
+    | curl -s \
+    -X POST --data-binary @- \
+    "$(eval "echo \"$url\"")"
+fi
+    # "http://cgi/render?name=$(basename ${file})&format=png"
+ 
