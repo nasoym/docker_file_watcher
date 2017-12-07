@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+trap 'echo "$0: line ${LINENO}: exiting because of error";exit 1' ERR
+
+inotifywait \
+  -r \
+  -m \
+  -e modify \
+  --exclude ".*.swp" \
+  --format "%w%f" \
+  ${watched_path} \
+  | while read file; do \
+    ${script} ${file}
+  done
+
